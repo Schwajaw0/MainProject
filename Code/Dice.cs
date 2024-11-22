@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Dice : MonoBehaviour {
 
-    
+    //From Youtube (besides this one everything below the other comments until the next avaliable function is from youtube)
     private Sprite[] diceSides;
 
     
@@ -25,7 +25,7 @@ public class Dice : MonoBehaviour {
 
     private void Start()
     {
-        
+        //From Youtube
         rend = GetComponent<SpriteRenderer>();
 
         
@@ -83,7 +83,7 @@ public class Dice : MonoBehaviour {
         isRolling = false; 
     }
 
-    
+    //From Youtube
     public IEnumerator RollTheDice()
     {
         int randomDiceSide = 0;
