@@ -5,7 +5,7 @@ using UnityEngine;
 public class Skeleton : MonoBehaviour
 {
     public float speed = 2f;
-    private int health = 1; // Health of the enemy, 1 means it can take 1 hit
+    private int health = 1; 
 
     void Start()
     {
@@ -14,27 +14,27 @@ public class Skeleton : MonoBehaviour
 
     void Update()
     {
-        // Move the enemy to the left
+        
         transform.Translate(Vector2.left * speed * Time.deltaTime);
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        // Check if the enemy collides with the tower
+        
         playerTower playerTower = other.GetComponent<playerTower>();
         if (playerTower != null)
         {
-            // Damage the tower
-            playerTower.TakeDamage(5); // You can adjust this value as needed
-            Destroy(gameObject); // Destroy the enemy after damaging the tower
+            
+            playerTower.TakeDamage(5); 
+            Destroy(gameObject); 
         }
 
-        // Check if the enemy collides with a troop (Knight)
+        
         Knight knight = other.GetComponent<Knight>();
         if (knight != null)
         {
-            TakeDamage(1); // Enemy takes 1 damage when colliding with a Knight
-            knight.TakeDamage(1); // The Knight also takes damage
+            TakeDamage(1); 
+            knight.TakeDamage(1); 
         }
     }
 
@@ -46,7 +46,7 @@ public class Skeleton : MonoBehaviour
         if (health <= 0)
         {
             Debug.Log("Skeleton destroyed!");
-            Destroy(gameObject); // Destroy the enemy if health is 0 or below
+            Destroy(gameObject); 
         }
     }
 }

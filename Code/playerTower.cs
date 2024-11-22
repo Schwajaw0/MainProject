@@ -6,19 +6,19 @@ using UnityEngine.SceneManagement;
 
 public class playerTower : MonoBehaviour
 {
-    public float maxHealth = 100f; // Maximum health
+    public float maxHealth = 100f; 
     private float currentHealth;
 
     public Image healthBar;
     
-    // Start is called before the first frame update
+    
     void Start()
     {
         currentHealth = maxHealth;
         UpdateHealthBar();
     }
 
-    // Update is called once per frame
+    
     void Update()
     {
 
@@ -26,12 +26,12 @@ public class playerTower : MonoBehaviour
     public void TakeDamage(float damage)
     {
         currentHealth -= damage;
-        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth); // Ensure health stays within bounds
+        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth); 
         UpdateHealthBar();
 
         if (currentHealth <= 0)
         {
-            Destroy(gameObject); // Destroy the tower when health reaches zero
+            Destroy(gameObject); 
            
         }
     }
@@ -40,7 +40,7 @@ public class playerTower : MonoBehaviour
     {
         if (healthBar != null)
         {
-            healthBar.fillAmount = currentHealth / maxHealth; // Update health bar fill
+            healthBar.fillAmount = currentHealth / maxHealth; 
         }
     }
    

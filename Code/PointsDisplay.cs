@@ -7,24 +7,24 @@ using TMPro;
 
 public class PointsDisplay : MonoBehaviour
 {
-    public TextMeshProUGUI pointsText; // Reference to the UI Text element
+    public TextMeshProUGUI pointsText; 
 
     void Start()
     {
-        UpdatePointsDisplay(0); // Initialize points display to start at 0
+        UpdatePointsDisplay(0); 
 
-        // Subscribe to points changes if PlayerPointsManager instance is already available
+        
         if (PlayerPointsManager.Instance != null)
         {
             PlayerPointsManager.Instance.onPointsChanged += UpdatePointsDisplay;
             Debug.Log("Subscribed to onPointsChanged event in Start()");
-            UpdatePointsDisplay(PlayerPointsManager.Instance.GetPlayerPoints()); // Ensure UI is synced with current points
+            UpdatePointsDisplay(PlayerPointsManager.Instance.GetPlayerPoints()); 
         }
     }
 
     void OnEnable()
     {
-        // Subscribe to the onPointsChanged event
+        
         if (PlayerPointsManager.Instance != null)
         {
             PlayerPointsManager.Instance.onPointsChanged += UpdatePointsDisplay;
@@ -34,7 +34,7 @@ public class PointsDisplay : MonoBehaviour
 
     void OnDisable()
     {
-        // Unsubscribe from the onPointsChanged event
+        
         if (PlayerPointsManager.Instance != null)
         {
             PlayerPointsManager.Instance.onPointsChanged -= UpdatePointsDisplay;
@@ -42,11 +42,11 @@ public class PointsDisplay : MonoBehaviour
         }
     }
 
-    // Method to update the points display
+    
     public void UpdatePointsDisplay(int points)
     {
         pointsText.text = "Coins: " + points.ToString();
-        Debug.Log($"Updating Points Display: {points}"); // Debug log to confirm UI update
+        Debug.Log($"Updating Points Display: {points}"); 
     }
 }
 

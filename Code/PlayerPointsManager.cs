@@ -8,16 +8,16 @@ public class PlayerPointsManager : MonoBehaviour
 
     private int playerPoints;
 
-    // Declare an event to notify listeners when points change
+    
     public event Action<int> onPointsChanged;
 
     void Awake()
     {
-        // Set up singleton
+        
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject); // Make sure the PlayerPointsManager persists
+            DontDestroyOnLoad(gameObject); 
         }
         else
         {
@@ -30,7 +30,7 @@ public class PlayerPointsManager : MonoBehaviour
         playerPoints += points;
         Debug.Log($"Points Added: {points}. Total Points: {playerPoints}");
 
-        // Trigger the onPointsChanged event to update UI
+       
         onPointsChanged?.Invoke(playerPoints);
     }
 

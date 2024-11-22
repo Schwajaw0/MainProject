@@ -18,13 +18,13 @@ public class Spear : MonoBehaviour
 
     void Update()
     {
-        // Move the troop to the right
+        
         transform.Translate(Vector2.right * speed * Time.deltaTime);
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        // Check if the collided object is the enemy tower
+        
         enemyTower enemyTower = other.GetComponent<enemyTower>();
         if (enemyTower != null)
         {
@@ -33,10 +33,10 @@ public class Spear : MonoBehaviour
 
        
         Skeleton skeleton = other.GetComponent<Skeleton>();
-        if (skeleton != null && !isInvincible) // Only take damage if not invincible
+        if (skeleton != null && !isInvincible) 
         {
             TakeDamage(1); 
-            skeleton.TakeDamage(1); // The Skeleton also takes damage
+            skeleton.TakeDamage(1); 
         }
     }
 
@@ -62,7 +62,7 @@ public class Spear : MonoBehaviour
     private IEnumerator BecomeTemporarilyInvincible()
     {
         isInvincible = true; 
-        yield return new WaitForSeconds(invincibilityDuration); // Wait for the invincibility duration
-        isInvincible = false; // Remove the invincibility
+        yield return new WaitForSeconds(invincibilityDuration); 
+        isInvincible = false; 
     }
 }
