@@ -20,6 +20,15 @@ public class Skeleton : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
+        // Check if the enemy collides with the tower
+        playerTower playerTower = other.GetComponent<playerTower>();
+        if (playerTower != null)
+        {
+            // Damage the tower
+            playerTower.TakeDamage(5); // You can adjust this value as needed
+            Destroy(gameObject); // Destroy the enemy after damaging the tower
+        }
+
         // Check if the enemy collides with a troop (Knight)
         Knight knight = other.GetComponent<Knight>();
         if (knight != null)
@@ -32,9 +41,11 @@ public class Skeleton : MonoBehaviour
     public void TakeDamage(int damage)
     {
         health -= damage;
+        Debug.Log($"Skeleton took damage! Remaining health: {health}");
 
         if (health <= 0)
         {
+            Debug.Log("Skeleton destroyed!");
             Destroy(gameObject); // Destroy the enemy if health is 0 or below
         }
     }
