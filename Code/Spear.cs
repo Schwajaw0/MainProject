@@ -6,18 +6,23 @@ public class Spear : MonoBehaviour
 {
     public float speed = 2f;
     public float damageAmount = 20f;
-    // Start is called before the first frame update
+    private int health = 3; 
+
+    private bool isInvincible = false; 
+    [SerializeField] private float invincibilityDuration = 0.2f; 
+
     void Start()
     {
-        
+
     }
 
-    // Update is called once per frame
     void Update()
     {
+        // Move the troop to the right
         transform.Translate(Vector2.right * speed * Time.deltaTime);
     }
-    void OnTriggerEnter2D(Collider2D other)
+
+    private void OnTriggerEnter2D(Collider2D other)
     {
         // Check if the collided object is the enemy tower
         enemyTower enemyTower = other.GetComponent<enemyTower>();
@@ -25,5 +30,39 @@ public class Spear : MonoBehaviour
         {
             enemyTower.TakeDamage(damageAmount);
         }
+
+       
+        Skeleton skeleton = other.GetComponent<Skeleton>();
+        if (skeleton != null && !isInvincible) // Only take damage if not invincible
+        {
+            TakeDamage(1); 
+            skeleton.TakeDamage(1); // The Skeleton also takes damage
+        }
+    }
+
+    public void TakeDamage(int damage)
+    {
+        if (!isInvincible)
+        {
+            health -= damage;
+            Debug.Log($"Spearman took damage! Remaining health: {health}");
+
+            if (health <= 0)
+            {
+                Debug.Log("SpearMan destroyed!");
+                Destroy(gameObject); 
+            }
+            else
+            {
+                StartCoroutine(BecomeTemporarilyInvincible());
+            }
+        }
+    }
+
+    private IEnumerator BecomeTemporarilyInvincible()
+    {
+        isInvincible = true; 
+        yield return new WaitForSeconds(invincibilityDuration); // Wait for the invincibility duration
+        isInvincible = false; // Remove the invincibility
     }
 }

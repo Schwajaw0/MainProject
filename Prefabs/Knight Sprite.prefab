@@ -159,3 +159,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 3
   damageAmount: 10
+  invincibilityDuration: 0.2

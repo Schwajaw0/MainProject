@@ -6,18 +6,23 @@ public class Archer : MonoBehaviour
 {
     public float speed = 2f;
     public float damageAmount = 10f;
-    // Start is called before the first frame update
+    private int health = 2; // Health of the Knight, meaning it can take 2 hits before being destroyed
+
+    private bool isInvincible = false; // Flag to track if the Knight is invincible
+    [SerializeField] private float invincibilityDuration = 0.2f; // Time in seconds the Archer is invincible after taking damage
+
     void Start()
     {
-        
+
     }
 
-    // Update is called once per frame
     void Update()
     {
+        // Move the troop to the right
         transform.Translate(Vector2.right * speed * Time.deltaTime);
     }
-    void OnTriggerEnter2D(Collider2D other)
+
+    private void OnTriggerEnter2D(Collider2D other)
     {
         // Check if the collided object is the enemy tower
         enemyTower enemyTower = other.GetComponent<enemyTower>();
@@ -25,6 +30,39 @@ public class Archer : MonoBehaviour
         {
             enemyTower.TakeDamage(damageAmount);
         }
+
+        // Check if the Knight collides with an enemy (Skeleton)
+        Skeleton skeleton = other.GetComponent<Skeleton>();
+        if (skeleton != null && !isInvincible) // Only take damage if not invincible
+        {
+            TakeDamage(1); // The Knight takes 1 damage when colliding with a Skeleton
+            skeleton.TakeDamage(1); // The Skeleton also takes damage
+        }
     }
-    //hello
+
+    public void TakeDamage(int damage)
+    {
+        if (!isInvincible)
+        {
+            health -= damage;
+            Debug.Log($"Archer took damage! Remaining health: {health}");
+
+            if (health <= 0)
+            {
+                Debug.Log("Archer destroyed!");
+                Destroy(gameObject); // Destroy the Archer if health is 0 or below
+            }
+            else
+            {
+                StartCoroutine(BecomeTemporarilyInvincible());
+            }
+        }
+    }
+
+    private IEnumerator BecomeTemporarilyInvincible()
+    {
+        isInvincible = true; // Set the Archer to be invincible
+        yield return new WaitForSeconds(invincibilityDuration); // Wait for the invincibility duration
+        isInvincible = false; // Remove the invincibility
+    }
 }

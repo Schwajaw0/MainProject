@@ -15,6 +15,14 @@ public class Dice : MonoBehaviour {
     // Variable to store final value after the roll
     private int finalSide;
 
+    // Reference to EnemyWaveSpawner to start a wave after rolling the dice
+    [SerializeField] private GameObject EnemyWaves;
+
+    private EnemyWaves waveSpawner;
+
+    // To prevent re-rolling while the dice are still rolling
+    private static bool isRolling = false;
+
     private void Start()
     {
         // Assign Renderer component
@@ -22,19 +30,63 @@ public class Dice : MonoBehaviour {
 
         // Load dice sides sprites to array from DiceSides subfolder of Resources folder
         diceSides = Resources.LoadAll<Sprite>("DiceSides/");
+
+        // Get the EnemyWaveSpawner script from the assigned GameObject
+        if (EnemyWaves != null)
+        {
+            waveSpawner = EnemyWaves.GetComponent<EnemyWaves>();
+        }
     }
 
     // If you left click over the dice, then RollTheDice coroutine is started
     private void OnMouseDown()
     {
-        StartCoroutine(RollTheDice());
+        if (!isRolling) // Ensure dice are not rolled again until the current roll finishes
+        {
+            StartCoroutine(RollBothDice());
+        }
     }
 
-    // Coroutine that rolls the dice
-    private IEnumerator RollTheDice()
+    // Coroutine to roll both dice
+    private IEnumerator RollBothDice()
+    {
+        isRolling = true; // Prevent re-rolling until this roll finishes
+
+        // Roll the current dice
+        yield return StartCoroutine(RollTheDice());
+
+        // Roll the other dice if it exists
+        int totalPoints = finalSide; // Start with the value from this dice
+
+        if (otherDice != null)
+        {
+            Dice otherDiceScript = otherDice.GetComponent<Dice>();
+            if (otherDiceScript != null)
+            {
+                yield return StartCoroutine(otherDiceScript.RollTheDice());
+                totalPoints += otherDiceScript.finalSide; // Add value from the other dice
+            }
+        }
+
+        // Show final points value in Console
+        Debug.Log($"Total points from both dice: {totalPoints}");
+
+        // Add points to the player's score
+        AddPoints(totalPoints);
+
+        // Start the next wave after rolling both dice and adding points
+        if (waveSpawner != null)
+        {
+            waveSpawner.StartNextWave();
+        }
+
+        isRolling = false; // Allow rolling again after this roll finishes
+    }
+
+    // Coroutine that rolls a single dice
+    public IEnumerator RollTheDice()
     {
         int randomDiceSide = 0;
-        finalSide = 0;
 
         // Loop to switch dice sides randomly before final side appears (20 iterations here)
         for (int i = 0; i <= 20; i++)
@@ -48,21 +100,7 @@ public class Dice : MonoBehaviour {
         finalSide = randomDiceSide + 1;
 
         // Show final dice value in Console
-        Debug.Log($"Dice 1 rolled: {finalSide}");
-
-        // After the current dice finishes rolling, roll the other dice if it exists
-        if (otherDice != null)
-        {
-            Dice otherDiceScript = otherDice.GetComponent<Dice>();
-            if (otherDiceScript != null)
-            {
-                yield return StartCoroutine(otherDiceScript.RollTheDice());
-
-                // Calculate and add points once both dice are rolled
-                int totalPoints = finalSide + otherDiceScript.finalSide;
-                AddPoints(totalPoints);
-            }
-        }
+        Debug.Log($"Dice rolled: {finalSide}");
     }
 
     // Method to add points

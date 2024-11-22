@@ -18,7 +18,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3626916397498700004, guid: a54211cf7a4467649a3562c116c9cba1, type: 3}
       propertyPath: m_SortingOrder
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7878350319992209165, guid: a54211cf7a4467649a3562c116c9cba1, type: 3}
       propertyPath: m_LocalScale.x
@@ -162,3 +162,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 2
+  damageAmount: 20
+  invincibilityDuration: 0.2
